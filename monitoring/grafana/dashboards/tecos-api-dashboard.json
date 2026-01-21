@@ -1,0 +1,275 @@
+{
+  "dashboard": {
+    "uid": "tecos-api-red",
+    "title": "Tecos API - SRE Dashboard RED Method",
+    "tags": ["tecos-api", "spring-boot", "sre", "red"],
+    "timezone": "browser",
+    "schemaVersion": 16,
+    "version": 0,
+    "refresh": "10s",
+    "time": {
+      "from": "now-15m",
+      "to": "now"
+    },
+    "panels": [
+      {
+        "id": 1,
+        "title": "Rate - Requisicoes por Segundo RPS",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
+        "targets": [{
+          "expr": "sum(rate(http_server_requests_seconds_count{application=\"tecos-api\"}[1m])) by (method, uri)",
+          "legendFormat": "{{method}} {{uri}}",
+          "refId": "A"
+        }],
+        "yaxes": [
+          {"format": "reqps", "label": "Requisicoes/s", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Errors - Taxa de Erros 4xx 5xx",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
+        "targets": [{
+          "expr": "sum(rate(http_server_requests_seconds_count{application=\"tecos-api\",status=~\"4..|5..\"}[1m])) by (status, uri)",
+          "legendFormat": "{{status}} - {{uri}}",
+          "refId": "A"
+        }],
+        "yaxes": [
+          {"format": "short", "label": "Erros/s", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Duration - Latencia P95",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+        "targets": [{
+          "expr": "histogram_quantile(0.95, sum(rate(http_server_requests_seconds_bucket{application=\"tecos-api\"}[5m])) by (le, uri))",
+          "legendFormat": "P95 - {{uri}}",
+          "refId": "A"
+        }],
+        "yaxes": [
+          {"format": "s", "label": "Tempo s", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Duration - Latencia P99",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+        "targets": [{
+          "expr": "histogram_quantile(0.99, sum(rate(http_server_requests_seconds_bucket{application=\"tecos-api\"}[5m])) by (le, uri))",
+          "legendFormat": "P99 - {{uri}}",
+          "refId": "A"
+        }],
+        "yaxes": [
+          {"format": "s", "label": "Tempo s", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 5,
+        "title": "JVM Heap Memory",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+        "targets": [
+          {"expr": "jvm_memory_used_bytes{application=\"tecos-api\", area=\"heap\", id=\"heap\"}", "legendFormat": "Heap Used", "refId": "A"},
+          {"expr": "jvm_memory_max_bytes{application=\"tecos-api\", area=\"heap\", id=\"heap\"}", "legendFormat": "Heap Max", "refId": "B"}
+        ],
+        "yaxes": [
+          {"format": "bytes", "label": "Memoria", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 6,
+        "title": "JVM Garbage Collection GC Pause",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 16},
+        "targets": [{
+          "expr": "rate(jvm_gc_pause_seconds_sum{application=\"tecos-api\"}[5m])",
+          "legendFormat": "{{gc}}",
+          "refId": "A"
+        }],
+        "yaxes": [
+          {"format": "s", "label": "GC Pause Time", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 7,
+        "title": "JVM Threads",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 24},
+        "targets": [
+          {"expr": "jvm_threads_live_threads{application=\"tecos-api\"}", "legendFormat": "Threads Ativas", "refId": "A"},
+          {"expr": "jvm_threads_peak_threads{application=\"tecos-api\"}", "legendFormat": "Threads Peak", "refId": "B"}
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Threads", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 8,
+        "title": "HikariCP Connection Pool",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 24},
+        "targets": [
+          {"expr": "hikari_connections_active{application=\"tecos-api\"}", "legendFormat": "Conexoes Ativas", "refId": "A"},
+          {"expr": "hikari_connections_idle{application=\"tecos-api\"}", "legendFormat": "Conexoes Idle", "refId": "B"},
+          {"expr": "hikari_connections_pending{application=\"tecos-api\"}", "legendFormat": "Conexoes Pendentes", "refId": "C"}
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Conexoes", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 9,
+        "title": "Business Metrics - Empresas Criadas",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 32},
+        "targets": [
+          {"expr": "rate(tecos_companies_created_total{application=\"tecos-api\"}[5m])", "legendFormat": "Empresas Criadas/s", "refId": "A"},
+          {"expr": "tecos_companies_created_total{application=\"tecos-api\"}", "legendFormat": "Total Criadas", "refId": "B"}
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Taxa", "min": 0},
+          {"format": "short", "label": "Total"}
+        ]
+      },
+      {
+        "id": 10,
+        "title": "Business Metrics - Operacoes CRUD",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 32},
+        "targets": [
+          {"expr": "rate(tecos_companies_created_total{application=\"tecos-api\"}[5m])", "legendFormat": "Criadas/s", "refId": "A"},
+          {"expr": "rate(tecos_companies_updated_total{application=\"tecos-api\"}[5m])", "legendFormat": "Atualizadas/s", "refId": "B"},
+          {"expr": "rate(tecos_companies_deleted_total{application=\"tecos-api\"}[5m])", "legendFormat": "Deletadas/s", "refId": "C"}
+        ],
+        "yaxes": [
+          {"format": "short", "label": "Operacoes/s", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Business Metrics - Duracao das Operacoes P95 P99",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 40},
+        "targets": [
+          {"expr": "histogram_quantile(0.95, sum(rate(tecos_companies_operation_duration_seconds_bucket{application=\"tecos-api\"}[5m])) by (le, operation))", "legendFormat": "P95 - {{operation}}", "refId": "A"},
+          {"expr": "histogram_quantile(0.99, sum(rate(tecos_companies_operation_duration_seconds_bucket{application=\"tecos-api\"}[5m])) by (le, operation))", "legendFormat": "P99 - {{operation}}", "refId": "B"}
+        ],
+        "yaxes": [
+          {"format": "s", "label": "Duracao s", "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 12,
+        "title": "System CPU Usage",
+        "type": "graph",
+        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 40},
+        "targets": [
+          {"expr": "system_cpu_usage{application=\"tecos-api\"} * 100", "legendFormat": "CPU Usage", "refId": "A"},
+          {"expr": "process_cpu_usage{application=\"tecos-api\"} * 100", "legendFormat": "Process CPU", "refId": "B"}
+        ],
+        "yaxes": [
+          {"format": "percent", "label": "CPU", "max": 100, "min": 0},
+          {"format": "short"}
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Health Status",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 0, "y": 48},
+        "targets": [{"expr": "up{job=\"tecos-api\"}", "refId": "A"}],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "reduceOptions": {"calcs": ["lastNotNull"]}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "mappings": [
+              {"options": {"0": {"text": "DOWN", "color": "red"}}, "type": "value"},
+              {"options": {"1": {"text": "UP", "color": "green"}}, "type": "value"}
+            ],
+            "thresholds": {"mode": "absolute", "steps": [{"value": null, "color": "red"}, {"value": 1, "color": "green"}]},
+            "unit": "none"
+          }
+        }
+      },
+      {
+        "id": 14,
+        "title": "Total Requisicoes 1h",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 6, "y": 48},
+        "targets": [{"expr": "sum(increase(http_server_requests_seconds_count{application=\"tecos-api\"}[1h]))", "refId": "A"}],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "reduceOptions": {"calcs": ["lastNotNull"]}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {"mode": "absolute", "steps": [{"value": null, "color": "blue"}]},
+            "unit": "short"
+          }
+        }
+      },
+      {
+        "id": 15,
+        "title": "Taxa de Erro",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 12, "y": 48},
+        "targets": [{"expr": "sum(rate(http_server_requests_seconds_count{application=\"tecos-api\",status=~\"4..|5..\"}[5m])) / sum(rate(http_server_requests_seconds_count{application=\"tecos-api\"}[5m])) * 100", "refId": "A"}],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "reduceOptions": {"calcs": ["lastNotNull"]}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {"mode": "absolute", "steps": [{"value": null, "color": "green"}, {"value": 1, "color": "yellow"}, {"value": 5, "color": "red"}]},
+            "unit": "percent",
+            "decimals": 2
+          }
+        }
+      },
+      {
+        "id": 16,
+        "title": "Latencia Media ms",
+        "type": "stat",
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 48},
+        "targets": [{"expr": "avg(rate(http_server_requests_seconds_sum{application=\"tecos-api\"}[5m]) / rate(http_server_requests_seconds_count{application=\"tecos-api\"}[5m])) * 1000", "refId": "A"}],
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "reduceOptions": {"calcs": ["lastNotNull"]}
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {"mode": "thresholds"},
+            "thresholds": {"mode": "absolute", "steps": [{"value": null, "color": "green"}, {"value": 200, "color": "yellow"}, {"value": 500, "color": "red"}]},
+            "unit": "ms",
+            "decimals": 0
+          }
+        }
+      }
+    ]
+  },
+  "overwrite": true
+}
