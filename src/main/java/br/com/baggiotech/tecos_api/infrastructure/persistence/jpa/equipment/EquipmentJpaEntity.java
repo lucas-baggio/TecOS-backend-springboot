@@ -1,0 +1,63 @@
+package br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.equipment;
+
+import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.client.ClientJpaEntity;
+import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.company.CompanyJpaEntity;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "equipments")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@SoftDelete
+public class EquipmentJpaEntity {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "company_id", nullable = false)
+    private CompanyJpaEntity company;
+    
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_id", nullable = false)
+    private ClientJpaEntity client;
+    
+    @Column(nullable = false)
+    private String type;
+    
+    @Column
+    private String brand;
+    
+    @Column
+    private String model;
+    
+    @Column(name = "serial_number")
+    private String serialNumber;
+    
+    @Column(columnDefinition = "TEXT")
+    private String observations;
+    
+    @CreationTimestamp
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
+    
+    @UpdateTimestamp
+    @Column(name = "updated_at", nullable = false)
+    private LocalDateTime updatedAt;
+    
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+}
