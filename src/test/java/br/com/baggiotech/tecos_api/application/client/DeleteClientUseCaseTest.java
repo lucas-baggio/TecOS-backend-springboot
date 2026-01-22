@@ -1,0 +1,81 @@
+package br.com.baggiotech.tecos_api.application.client;
+
+import br.com.baggiotech.tecos_api.domain.client.Client;
+import br.com.baggiotech.tecos_api.domain.client.ClientRepository;
+import br.com.baggiotech.tecos_api.domain.exception.EntityNotFoundException;
+import br.com.baggiotech.tecos_api.infrastructure.metrics.CustomMetrics;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.UUID;
+
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+@DisplayName("DeleteClientUseCase Tests")
+class DeleteClientUseCaseTest {
+
+    @Mock
+    private ClientRepository repository;
+
+    @Mock
+    private CustomMetrics metrics;
+
+    @InjectMocks
+    private DeleteClientUseCase useCase;
+
+    private Client client;
+
+    @BeforeEach
+    void setUp() {
+        client = new Client();
+        client.setId(UUID.randomUUID());
+        client.setName("Test Client");
+        client.setIsActive(true);
+        client.setCreatedAt(LocalDateTime.now());
+        client.setUpdatedAt(LocalDateTime.now());
+    }
+
+    @Test
+    @DisplayName("Deve deletar cliente com sucesso")
+    void shouldDeleteClientSuccessfully() {
+        io.micrometer.core.instrument.simple.SimpleMeterRegistry meterRegistry = new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
+        io.micrometer.core.instrument.Timer.Sample sample = io.micrometer.core.instrument.Timer.start(meterRegistry);
+        
+        when(repository.findById(client.getId())).thenReturn(Optional.of(client));
+        when(metrics.startTimer()).thenReturn(sample);
+        doNothing().when(repository).delete(any(Client.class));
+        
+        useCase.execute(client.getId());
+        
+        verify(repository).findById(client.getId());
+        verify(repository).delete(client);
+        verify(metrics).incrementClientsDeleted();
+    }
+
+    @Test
+    @DisplayName("Deve lançar exceção quando cliente não encontrado")
+    void shouldThrowExceptionWhenClientNotFound() {
+        io.micrometer.core.instrument.simple.SimpleMeterRegistry meterRegistry = new io.micrometer.core.instrument.simple.SimpleMeterRegistry();
+        io.micrometer.core.instrument.Timer.Sample sample = io.micrometer.core.instrument.Timer.start(meterRegistry);
+        
+        UUID nonExistentId = UUID.randomUUID();
+        when(repository.findById(nonExistentId)).thenReturn(Optional.empty());
+        when(metrics.startTimer()).thenReturn(sample);
+        
+        assertThatThrownBy(() -> useCase.execute(nonExistentId))
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessageContaining("Client");
+
+        verify(repository).findById(nonExistentId);
+        verify(repository, never()).delete(any(Client.class));
+    }
+}
