@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SoftDelete;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -18,6 +21,8 @@ import java.util.UUID;
 
 @Entity
 @Table(name = "work_orders")
+@FilterDef(name = "companyFilter", parameters = @ParamDef(name = "companyId", type = java.util.UUID.class))
+@Filter(name = "companyFilter", condition = "company_id = :companyId")
 @Getter
 @Setter
 @NoArgsConstructor

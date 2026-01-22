@@ -5,6 +5,7 @@ import br.com.baggiotech.tecos_api.application.auth.LoginUseCase;
 import br.com.baggiotech.tecos_api.application.user.GetUserByIdUseCase;
 import br.com.baggiotech.tecos_api.application.user.UpdateUserProfileUseCase;
 import br.com.baggiotech.tecos_api.domain.user.User;
+import br.com.baggiotech.tecos_api.infrastructure.security.SecurityContext;
 import br.com.baggiotech.tecos_api.presentation.dto.auth.ChangePasswordRequest;
 import br.com.baggiotech.tecos_api.presentation.dto.auth.ForgotPasswordRequest;
 import br.com.baggiotech.tecos_api.presentation.dto.auth.LoginRequest;
@@ -45,6 +46,12 @@ public class AuthController {
     public ResponseEntity<LoginResponse> login(@Valid @RequestBody LoginRequest request) {
         User user = loginUseCase.execute(request.email(), request.password());
         
+        // Definir o contexto de segurança para habilitar os filtros de company_id
+        if (user.getCompany() != null) {
+            SecurityContext.setCurrentCompanyId(user.getCompany().getId());
+            SecurityContext.setCurrentUserId(user.getId());
+        }
+        
         UserResponse userResponse = userMapper.toResponse(user);
         String token = "mock-token-" + user.getId();
         
@@ -54,6 +61,8 @@ public class AuthController {
 
     @PostMapping("/logout")
     public ResponseEntity<Map<String, String>> logout() {
+        // Limpar o contexto de segurança
+        SecurityContext.clear();
         return ResponseEntity.ok(Map.of("message", "Logout realizado com sucesso."));
     }
 
