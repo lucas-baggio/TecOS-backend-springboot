@@ -138,11 +138,6 @@ class UserControllerTest {
         Page<User> page = new PageImpl<>(Arrays.asList(user), pageable, 1);
         when(listUsersUseCase.execute(any(), any(), eq(companyId), any(), any(), any())).thenReturn(page);
 
-        br.com.baggiotech.tecos_api.presentation.dto.user.UserResponse response =
-                new br.com.baggiotech.tecos_api.presentation.dto.user.UserResponse(
-                        user.getId(), companyId, company.getName(), user.getName(), user.getEmail(),
-                        user.getType(), user.getIsActive(), user.getCreatedAt(), user.getUpdatedAt()
-                );
         when(mapper.toResponse(any(User.class))).thenAnswer(invocation -> {
             User u = invocation.getArgument(0);
             return new br.com.baggiotech.tecos_api.presentation.dto.user.UserResponse(

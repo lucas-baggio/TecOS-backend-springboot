@@ -83,10 +83,8 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve listar todas as empresas")
     void shouldFindAllCompanies() {
-
-        Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
-        Company company2 = createCompany("Company Beta", "beta@example.com", false);
-        
+        createCompany("Company Alpha", "alpha@example.com", true);
+        createCompany("Company Beta", "beta@example.com", false);
 
         List<Company> companies = repository.findAll();
         assertThat(companies).hasSize(2);
@@ -95,10 +93,8 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve deletar empresa por ID")
     void shouldDeleteCompanyById() {
-
         Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
         Company company2 = createCompany("Company Beta", "beta@example.com", false);
-        
 
         repository.deleteById(company1.getId());
         assertThat(repository.existsById(company1.getId())).isFalse();
@@ -108,9 +104,7 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve verificar se empresa existe por ID")
     void shouldCheckIfCompanyExistsById() {
-
         Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
-        
 
         assertThat(repository.existsById(company1.getId())).isTrue();
         assertThat(repository.existsById(UUID.randomUUID())).isFalse();
@@ -119,9 +113,7 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve buscar empresa por email")
     void shouldFindCompanyByEmail() {
-
-        Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
-        
+        createCompany("Company Alpha", "alpha@example.com", true);
 
         Optional<Company> found = repository.findByEmail("alpha@example.com");
         assertThat(found).isPresent();
@@ -131,9 +123,7 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve verificar se email existe")
     void shouldCheckIfEmailExists() {
-
-        Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
-        
+        createCompany("Company Alpha", "alpha@example.com", true);
 
         assertThat(repository.existsByEmail("alpha@example.com")).isTrue();
         assertThat(repository.existsByEmail("nonexistent@example.com")).isFalse();
@@ -154,10 +144,8 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve filtrar empresas por isActive")
     void shouldFindCompaniesByIsActive() {
-
-        Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
-        Company company2 = createCompany("Company Beta", "beta@example.com", false);
-        
+        createCompany("Company Alpha", "alpha@example.com", true);
+        createCompany("Company Beta", "beta@example.com", false);
 
         List<Company> activeCompanies = repository.findByIsActive(true);
         List<Company> inactiveCompanies = repository.findByIsActive(false);
@@ -170,10 +158,8 @@ class CompanyRepositoryImplTest {
     @Test
     @DisplayName("Deve buscar empresas por nome ou email")
     void shouldSearchCompaniesByNameOrEmail() {
-
-        Company company1 = createCompany("Company Alpha", "alpha@example.com", true);
-        Company company2 = createCompany("Company Beta", "beta@example.com", false);
-        
+        createCompany("Company Alpha", "alpha@example.com", true);
+        createCompany("Company Beta", "beta@example.com", false);
 
         List<Company> results1 = repository.searchByNameOrEmail("Alpha");
         List<Company> results2 = repository.searchByNameOrEmail("alpha@example.com");

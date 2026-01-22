@@ -3,10 +3,10 @@ package br.com.baggiotech.tecos_api.infrastructure.persistence.publiclink;
 import br.com.baggiotech.tecos_api.domain.publiclink.PublicLink;
 import br.com.baggiotech.tecos_api.domain.publiclink.PublicLinkRepository;
 import br.com.baggiotech.tecos_api.domain.workorder.WorkOrder;
+import br.com.baggiotech.tecos_api.domain.workorder.WorkOrderRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.publiclink.PublicLinkJpaEntity;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.publiclink.PublicLinkJpaRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.workorder.WorkOrderJpaEntity;
-import br.com.baggiotech.tecos_api.domain.workorder.WorkOrderRepository;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

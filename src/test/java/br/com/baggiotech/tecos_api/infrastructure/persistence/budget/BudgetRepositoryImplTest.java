@@ -7,7 +7,6 @@ import br.com.baggiotech.tecos_api.domain.company.Company;
 import br.com.baggiotech.tecos_api.domain.user.User;
 import br.com.baggiotech.tecos_api.domain.workorder.OrderStatus;
 import br.com.baggiotech.tecos_api.domain.workorder.WorkOrder;
-import br.com.baggiotech.tecos_api.domain.workorder.WorkOrderRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.budget.BudgetJpaRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.client.ClientJpaEntity;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.client.ClientJpaRepository;
@@ -65,9 +64,6 @@ class BudgetRepositoryImplTest {
 
     @Autowired
     private BudgetRepository repository;
-
-    @Autowired
-    private WorkOrderRepository workOrderRepository;
 
     private Company createCompany(String name, String email) {
         CompanyJpaEntity companyEntity = new CompanyJpaEntity();

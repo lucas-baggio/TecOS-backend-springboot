@@ -5,7 +5,6 @@ import br.com.baggiotech.tecos_api.domain.workorderhistory.WorkOrderHistory;
 import br.com.baggiotech.tecos_api.presentation.dto.workorderhistory.WorkOrderHistoryResponse;
 import br.com.baggiotech.tecos_api.presentation.mapper.workorderhistory.WorkOrderHistoryMapper;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

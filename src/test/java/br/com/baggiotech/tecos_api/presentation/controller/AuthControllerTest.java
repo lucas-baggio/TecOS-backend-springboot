@@ -5,7 +5,6 @@ import br.com.baggiotech.tecos_api.application.auth.LoginUseCase;
 import br.com.baggiotech.tecos_api.application.user.GetUserByIdUseCase;
 import br.com.baggiotech.tecos_api.application.user.UpdateUserProfileUseCase;
 import br.com.baggiotech.tecos_api.domain.company.Company;
-import br.com.baggiotech.tecos_api.domain.exception.EntityNotFoundException;
 import br.com.baggiotech.tecos_api.domain.user.User;
 import br.com.baggiotech.tecos_api.presentation.exception.GlobalExceptionHandler;
 import br.com.baggiotech.tecos_api.presentation.mapper.user.UserMapper;

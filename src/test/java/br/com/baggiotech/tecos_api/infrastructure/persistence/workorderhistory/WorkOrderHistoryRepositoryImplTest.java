@@ -4,7 +4,6 @@ import br.com.baggiotech.tecos_api.domain.company.Company;
 import br.com.baggiotech.tecos_api.domain.user.User;
 import br.com.baggiotech.tecos_api.domain.workorder.OrderStatus;
 import br.com.baggiotech.tecos_api.domain.workorder.WorkOrder;
-import br.com.baggiotech.tecos_api.domain.workorder.WorkOrderRepository;
 import br.com.baggiotech.tecos_api.domain.workorderhistory.WorkOrderHistory;
 import br.com.baggiotech.tecos_api.domain.workorderhistory.WorkOrderHistoryRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.client.ClientJpaEntity;
@@ -63,9 +62,6 @@ class WorkOrderHistoryRepositoryImplTest {
 
     @Autowired
     private WorkOrderHistoryRepository repository;
-
-    @Autowired
-    private WorkOrderRepository workOrderRepository;
 
     private Company createCompany(String name, String email) {
         CompanyJpaEntity companyEntity = new CompanyJpaEntity();

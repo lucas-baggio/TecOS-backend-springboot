@@ -6,7 +6,6 @@ import br.com.baggiotech.tecos_api.domain.publiclink.PublicLinkRepository;
 import br.com.baggiotech.tecos_api.domain.user.User;
 import br.com.baggiotech.tecos_api.domain.workorder.OrderStatus;
 import br.com.baggiotech.tecos_api.domain.workorder.WorkOrder;
-import br.com.baggiotech.tecos_api.domain.workorder.WorkOrderRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.client.ClientJpaEntity;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.client.ClientJpaRepository;
 import br.com.baggiotech.tecos_api.infrastructure.persistence.jpa.company.CompanyJpaEntity;
@@ -64,8 +63,6 @@ class PublicLinkRepositoryImplTest {
     @Autowired
     private PublicLinkRepository repository;
 
-    @Autowired
-    private WorkOrderRepository workOrderRepository;
 
     private Company createCompany(String name, String email) {
         CompanyJpaEntity companyEntity = new CompanyJpaEntity();
@@ -302,7 +299,7 @@ class PublicLinkRepositoryImplTest {
         br.com.baggiotech.tecos_api.domain.client.Client client = createClient(company, "Test Client", "11999999999");
         br.com.baggiotech.tecos_api.domain.equipment.Equipment equipment = createEquipment(company, client, "Notebook");
         WorkOrder workOrder = createWorkOrder(company, client, equipment, technician);
-        PublicLink link = createPublicLink(workOrder, "existing-token");
+        createPublicLink(workOrder, "existing-token");
         
         assertThat(repository.existsByToken("existing-token")).isTrue();
         assertThat(repository.existsByToken("non-existing-token")).isFalse();

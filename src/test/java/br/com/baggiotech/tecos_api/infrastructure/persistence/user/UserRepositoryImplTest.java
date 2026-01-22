@@ -116,8 +116,8 @@ class UserRepositoryImplTest {
     @DisplayName("Deve listar todos os usuários")
     void shouldFindAllUsers() {
         Company company = createCompany("Test Company", "company@example.com");
-        User user1 = createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
-        User user2 = createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", false);
+        createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
+        createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", false);
         
         List<User> users = repository.findAll();
         assertThat(users).hasSize(2);
@@ -150,7 +150,7 @@ class UserRepositoryImplTest {
     @DisplayName("Deve buscar usuário por email")
     void shouldFindUserByEmail() {
         Company company = createCompany("Test Company", "company@example.com");
-        User user1 = createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
+        createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
         
         Optional<User> found = repository.findByEmail("alpha@example.com");
         
@@ -162,7 +162,7 @@ class UserRepositoryImplTest {
     @DisplayName("Deve verificar se email existe")
     void shouldCheckIfEmailExists() {
         Company company = createCompany("Test Company", "company@example.com");
-        User user1 = createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
+        createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
         
         assertThat(repository.existsByEmail("alpha@example.com")).isTrue();
         assertThat(repository.existsByEmail("nonexistent@example.com")).isFalse();
@@ -174,9 +174,9 @@ class UserRepositoryImplTest {
         Company company1 = createCompany("Company 1", "company1@example.com");
         Company company2 = createCompany("Company 2", "company2@example.com");
         
-        User user1 = createUser(company1, "User 1", "user1@example.com", "pass123", "TECNICO", true);
-        User user2 = createUser(company1, "User 2", "user2@example.com", "pass456", "TECNICO", true);
-        User user3 = createUser(company2, "User 3", "user3@example.com", "pass789", "TECNICO", true);
+        createUser(company1, "User 1", "user1@example.com", "pass123", "TECNICO", true);
+        createUser(company1, "User 2", "user2@example.com", "pass456", "TECNICO", true);
+        createUser(company2, "User 3", "user3@example.com", "pass789", "TECNICO", true);
         
         List<User> company1Users = repository.findByCompanyId(company1.getId());
         
@@ -189,8 +189,8 @@ class UserRepositoryImplTest {
     @DisplayName("Deve filtrar usuários por isActive")
     void shouldFindUsersByIsActive() {
         Company company = createCompany("Test Company", "company@example.com");
-        User user1 = createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
-        User user2 = createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", false);
+        createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
+        createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", false);
         
         List<User> activeUsers = repository.findByIsActive(true);
         List<User> inactiveUsers = repository.findByIsActive(false);
@@ -205,8 +205,8 @@ class UserRepositoryImplTest {
     @DisplayName("Deve filtrar usuários por tipo")
     void shouldFindUsersByType() {
         Company company = createCompany("Test Company", "company@example.com");
-        User user1 = createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
-        User user2 = createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", true);
+        createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
+        createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", true);
         
         List<User> tecnicos = repository.findByType("TECNICO");
         List<User> admins = repository.findByType("ADMIN");
@@ -221,8 +221,8 @@ class UserRepositoryImplTest {
     @DisplayName("Deve buscar usuários por nome ou email")
     void shouldSearchUsersByNameOrEmail() {
         Company company = createCompany("Test Company", "company@example.com");
-        User user1 = createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
-        User user2 = createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", false);
+        createUser(company, "User Alpha", "alpha@example.com", "pass123", "TECNICO", true);
+        createUser(company, "User Beta", "beta@example.com", "pass456", "ADMIN", false);
         
         List<User> results1 = repository.searchByNameOrEmail("Alpha");
         List<User> results2 = repository.searchByNameOrEmail("alpha@example.com");
@@ -242,8 +242,8 @@ class UserRepositoryImplTest {
         Company company1 = createCompany("Company 1", "company1@example.com");
         Company company2 = createCompany("Company 2", "company2@example.com");
         
-        User user1 = createUser(company1, "User 1", "user@example.com", "pass123", "TECNICO", true);
-        User user2 = createUser(company2, "User 2", "user@example.com", "pass456", "TECNICO", true);
+        createUser(company1, "User 1", "user@example.com", "pass123", "TECNICO", true);
+        createUser(company2, "User 2", "user@example.com", "pass456", "TECNICO", true);
         
         assertThat(repository.existsByEmailAndCompanyId("user@example.com", company1.getId())).isTrue();
         assertThat(repository.existsByEmailAndCompanyId("user@example.com", company2.getId())).isTrue();

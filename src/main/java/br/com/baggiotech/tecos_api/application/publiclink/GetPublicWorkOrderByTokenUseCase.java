@@ -2,8 +2,6 @@ package br.com.baggiotech.tecos_api.application.publiclink;
 
 import br.com.baggiotech.tecos_api.domain.budget.Budget;
 import br.com.baggiotech.tecos_api.domain.budget.BudgetRepository;
-import br.com.baggiotech.tecos_api.domain.client.Client;
-import br.com.baggiotech.tecos_api.domain.equipment.Equipment;
 import br.com.baggiotech.tecos_api.domain.exception.EntityNotFoundException;
 import br.com.baggiotech.tecos_api.domain.publiclink.PublicLink;
 import br.com.baggiotech.tecos_api.domain.publiclink.PublicLinkRepository;

@@ -3,7 +3,6 @@ package br.com.baggiotech.tecos_api.application.budget;
 import br.com.baggiotech.tecos_api.domain.budget.Budget;
 import br.com.baggiotech.tecos_api.domain.budget.BudgetRepository;
 import br.com.baggiotech.tecos_api.domain.budget.BudgetStatus;
-import br.com.baggiotech.tecos_api.domain.company.Company;
 import br.com.baggiotech.tecos_api.domain.exception.EntityNotFoundException;
 import br.com.baggiotech.tecos_api.domain.user.User;
 import br.com.baggiotech.tecos_api.domain.user.UserRepository;
